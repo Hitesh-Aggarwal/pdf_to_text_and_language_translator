@@ -24,12 +24,12 @@ func main() {
 	file := os.Args[1]
 	reader, err := pdf.Open(file)
 	if err != nil {
-		log.Fatal("err opening sample.pdf")
+		log.Fatalf("err opening %s", file)
 	}
 	out := strings.Replace(file, ".pdf", ".txt", 1)
 	writer, err := os.Create(out)
 	if err != nil {
-		log.Fatal("err creating sample.txt")
+		log.Fatalf("err creating %s", out)
 	}
 
 	var b strings.Builder
