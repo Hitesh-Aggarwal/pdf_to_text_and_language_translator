@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Hate PDF/Languate translator</title>
+    <link rel="stylesheet" href="bootstrap-5.3.1-dist/css/bootstrap.css" />
+  </head>
+  <style>
+    textarea {
+      width: 100%;
+    }
+  </style>
+  <body>
+    <!-- Top Navigation bar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img class="img-fluid" src="images/logo.png" height="30" width="30" />
+          I Hate PDF</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">PDF Converter</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="language_translator.html"
+                >Language Translator</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+          <p class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <a class="nav-link" href="login.html">Login</a>
+          </p>
+        </div>
+      </div>
+    </nav>
+    <!-- Navigation bar ends -->
+
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>From</h2>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Choose Language</option>
+            <option value="1">English</option>
+            <option value="2">Hindi</option>
+            <option value="3">Punjabi</option>
+          </select>
+          <br />
+          <textarea rows="10"></textarea>
+        </div>
+        <div class="col-md-6">
+          <h2>To</h2>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Choose Language</option>
+            <option value="1">English</option>
+            <option value="2">Hindi</option>
+            <option value="3">Punjabi</option>
+          </select>
+          <br />
+          <textarea rows="10"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="mt-3 position-relative">
+        <div class="position-absolute start-0">
+          <button type="button" class="btn btn-secondary">
+            Upload .txt file instead
+          </button>
+        </div>
+        <div
+          class="position-absolute start-50"
+          style="transform: translateX(-50%)"
+        >
+          <button type="button" class="btn btn-primary">Convert</button>
+        </div>
+        <div class="position-absolute end-0">
+          <button type="button" class="btn btn-success">
+            Download text file
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="bootstrap-5.3.1-dist/js/bootstrap.bundle.js"></script>
+  </body>
+</html>

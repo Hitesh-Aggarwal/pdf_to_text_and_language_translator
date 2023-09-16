@@ -3,14 +3,58 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap demo</title>
+    <title>I Hate PDF/PDF converter</title>
     <link href="./bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+      .processing_container * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        font-family: monospace;
+      }
+
+      .progress-bar {
+        height: 20px;
+        background: #1da1f2;
+        box-shadow: 2px 14px 15px -7px rgba(30, 166, 250, 0.36);
+        border-radius: 50px;
+        transition: all 0.5s;
+      }
+
+      .processing_container {
+        width: 100%;
+        /* height: 30vh; */
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .processing_container h2 {
+        margin-bottom: 20px;
+      }
+      .processing_container .progress {
+        width: 80%;
+        height: 50px;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: start;
+        padding: 20px;
+        background: #e6e9ff;
+        border-radius: 20px;
+        box-shadow: 0px 10px 10px #abb7e9;
+      }
+    </style>
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Top Navigation bar -->
+    <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">The Squad</a>
+        <a class="navbar-brand" href="#">
+          <img class="img-fluid" src="images/logo.png" height="30" width="30" />
+          I Hate PDF</a
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -23,25 +67,42 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="index.html"
+                >PDF Converter</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="language_translator.html"
+                >Language Translator</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
             </li>
           </ul>
+          <p class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <a class="nav-link" href="login.html">Login</a>
+          </p>
         </div>
       </div>
     </nav>
+    <!-- Navigation bar ends -->
 
+    <!-- Main heading Jumbotron -->
     <div class="container">
       <div class="mt-4 mb-4 p-5 bg-light rounded">
         <h1>Seamlessly extract text from PDFs</h1>
       </div>
+    </div>
+    <!-- Heading ends -->
+
+    <!-- File upload dialog -->
+    <div class="container">
       <div class="card card-primary p-4">
         <!-- <label for="formFileLg" class="form-label card-title">Upload pdf</label> -->
         <h4 class="card-title">Upload PDF</h4>
@@ -50,8 +111,103 @@
           id="formFileLg"
           type="file"
         />
+
+        <div>
+          <br />
+          <button class="btn btn-primary">Upload</button>
+        </div>
       </div>
     </div>
+    <!-- File upload dialog ends -->
+
+    <!-- Progress bar -->
+    <div class="container mt-4">
+      <div class="processing_container">
+        <h2>Processing</h2>
+        <div class="progress"></div>
+        <br />
+      </div>
+    </div>
+    <!-- Progress bar ends -->
+
+    <!-- Download text file -->
+    <div class="container text-center mt-4">
+      <button class="btn btn-primary">Download text file</button>
+    </div>
+    <!-- --------------------------- -->
+
     <script src="bootstrap-5.3.1-dist/js/bootstrap.bundle.js"></script>
+
+    <script>
+      /*
+       * (class)Progress<nowValue, minValue, maxValue>
+       */
+
+      //helper function-> return <DOMelement>
+      function elt(type, prop, ...childrens) {
+        let elem = document.createElement(type);
+        if (prop) Object.assign(elem, prop);
+        for (let child of childrens) {
+          if (typeof child == "string")
+            elem.appendChild(document.createTextNode(child));
+          else elem.appendChild(elem);
+        }
+        return elem;
+      }
+
+      //Progress class
+      class Progress {
+        constructor(now, min, max, options) {
+          this.dom = elt("div", {
+            className: "progress-bar",
+          });
+          this.min = min;
+          this.max = max;
+          this.intervalCode = 0;
+          this.now = now;
+          this.syncState();
+          if (options.parent) {
+            document.querySelector(options.parent).appendChild(this.dom);
+          } else document.body.appendChild(this.dom);
+        }
+
+        syncState() {
+          this.dom.style.width = this.now + "%";
+        }
+
+        startTo(step, time) {
+          if (this.intervalCode !== 0) return;
+          this.intervalCode = setInterval(() => {
+            console.log("sss");
+            if (this.now + step > this.max) {
+              this.now = this.max;
+              this.syncState();
+              clearInterval(this.interval);
+              this.intervalCode = 0;
+              return;
+            }
+            this.now += step;
+            this.syncState();
+          }, time);
+        }
+        end() {
+          this.now = this.max;
+          clearInterval(this.intervalCode);
+          this.intervalCode = 0;
+          this.syncState();
+        }
+      }
+
+      let pb = new Progress(15, 0, 100, { parent: ".progress" });
+
+      //arg1 -> step length
+      //arg2 -> time(ms)
+      pb.startTo(5, 500);
+
+      //end to progress after 5s
+      setTimeout(() => {
+        pb.end();
+      }, 5000);
+    </script>
   </body>
 </html>
