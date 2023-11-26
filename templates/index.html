@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>I Hate PDF/PDF converter</title>
-    <link href="{{ url_for('serve_static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link
+      href="{{ url_for('serve_static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
 
     <style>
       .processing_container * {
@@ -53,10 +56,15 @@
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img class="img-fluid" src="{{ url_for('serve_images', filename='logo.png') }}" alt="Logo" height="30" width="30" />
+          <img
+            class="img-fluid"
+            src="{{ url_for('serve_images', filename='logo.png') }}"
+            alt="Logo"
+            height="30"
+            width="30"
+          />
           I Hate PDF
-          </a
-        >
+        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -102,20 +110,20 @@
 
     <!-- File upload dialog -->
     <div class="container">
-    <div class="card card-primary p-4">
-      <h4 class="card-title">Upload PDF</h4>
-      <input
-        class="form-control form-control-lg"
-        id="formFileLg"
-        type="file"
-      />
+      <div class="card card-primary p-4">
+        <h4 class="card-title">Upload PDF</h4>
+        <input
+          class="form-control form-control-lg"
+          id="formFileLg"
+          type="file"
+        />
 
-      <div>
-        <br />
-        <button class="btn btn-primary" onclick="uploadPDF()">Upload</button>
+        <div>
+          <br />
+          <button class="btn btn-primary" onclick="uploadPDF()">Upload</button>
+        </div>
       </div>
     </div>
-  </div>
     <!-- File upload dialog ends -->
 
     <!-- Progress bar -->
@@ -129,8 +137,18 @@
     <!-- Progress bar ends -->
 
     <!-- Download text file -->
-    <div class="container text-center mt-4" id="downloadSection" style="display: none;">
-      <a id="downloadLink" class="btn btn-primary" href="#" download="converted_text.txt">Download text file</a>
+    <div
+      class="container text-center mt-4"
+      id="downloadSection"
+      style="display: none"
+    >
+      <a
+        id="downloadLink"
+        class="btn btn-primary"
+        href="#"
+        download="converted_text.txt"
+        >Download text file</a
+      >
     </div>
     <!-- --------------------------- -->
 
@@ -208,37 +226,36 @@
       }, 5000);
 
       function uploadPDF() {
-  let input = document.getElementById('formFileLg');
-  let file = input.files[0];
+        let input = document.getElementById("formFileLg");
+        let file = input.files[0];
 
-  let formData = new FormData();
-  formData.append('file', file);
+        let formData = new FormData();
+        formData.append("file", file);
 
-  fetch('/convert_pdf', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.blob();
-  })
-  .then(blob => {
-    let url = window.URL.createObjectURL(blob);
+        fetch("/convert_pdf", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            let url = window.URL.createObjectURL(blob);
 
-    // Show the "Download text file" button after file conversion
-    document.getElementById('downloadSection').style.display = 'block';
+            // Show the "Download text file" button after file conversion
+            document.getElementById("downloadSection").style.display = "block";
 
-    // Set the link to download the text file
-    let downloadLink = document.getElementById('downloadLink');
-    downloadLink.href = url;
-  })
-  .catch(error => {
-    console.error('There was an error!', error);
-  });
-}
-
+            // Set the link to download the text file
+            let downloadLink = document.getElementById("downloadLink");
+            downloadLink.href = url;
+          })
+          .catch((error) => {
+            console.error("There was an error!", error);
+          });
+      }
     </script>
   </body>
 </html>
