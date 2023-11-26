@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>I Hate PDF/PDF converter</title>
-    <link href="./bootstrap-5.3.1-dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="{{ url_for('serve_static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
     <style>
       .processing_container * {
         box-sizing: border-box;
@@ -52,8 +53,9 @@
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img class="img-fluid" src="images/logo.png" height="30" width="30" />
-          I Hate PDF</a
+          <img class="img-fluid" src="{{ url_for('serve_images', filename='logo.png') }}" alt="Logo" height="30" width="30" />
+          I Hate PDF
+          </a
         >
         <button
           class="navbar-toggler"
@@ -69,21 +71,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.html"
+              <a class="nav-link active" aria-current="page" href="/"
                 >PDF Converter</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="language_translator.html"
+              <a class="nav-link" href="/language_translator"
                 >Language Translator</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
+              <a class="nav-link" href="/about">About</a>
             </li>
           </ul>
           <p class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <a class="nav-link" href="login.html">Login</a>
+            <a class="nav-link" href="/login">Login</a>
           </p>
         </div>
       </div>
@@ -100,21 +102,20 @@
 
     <!-- File upload dialog -->
     <div class="container">
-      <div class="card card-primary p-4">
-        <!-- <label for="formFileLg" class="form-label card-title">Upload pdf</label> -->
-        <h4 class="card-title">Upload PDF</h4>
-        <input
-          class="form-control form-control-lg"
-          id="formFileLg"
-          type="file"
-        />
+    <div class="card card-primary p-4">
+      <h4 class="card-title">Upload PDF</h4>
+      <input
+        class="form-control form-control-lg"
+        id="formFileLg"
+        type="file"
+      />
 
-        <div>
-          <br />
-          <button class="btn btn-primary">Upload</button>
-        </div>
+      <div>
+        <br />
+        <button class="btn btn-primary" onclick="uploadPDF()">Upload</button>
       </div>
     </div>
+  </div>
     <!-- File upload dialog ends -->
 
     <!-- Progress bar -->
@@ -128,12 +129,12 @@
     <!-- Progress bar ends -->
 
     <!-- Download text file -->
-    <div class="container text-center mt-4">
-      <button class="btn btn-primary">Download text file</button>
+    <div class="container text-center mt-4" id="downloadSection" style="display: none;">
+      <a id="downloadLink" class="btn btn-primary" href="#" download="converted_text.txt">Download text file</a>
     </div>
     <!-- --------------------------- -->
 
-    <script src="bootstrap-5.3.1-dist/js/bootstrap.bundle.js"></script>
+    <script src="{{ url_for('serve_static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
     <script>
       /*
@@ -205,6 +206,39 @@
       setTimeout(() => {
         pb.end();
       }, 5000);
+
+      function uploadPDF() {
+  let input = document.getElementById('formFileLg');
+  let file = input.files[0];
+
+  let formData = new FormData();
+  formData.append('file', file);
+
+  fetch('/convert_pdf', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.blob();
+  })
+  .then(blob => {
+    let url = window.URL.createObjectURL(blob);
+
+    // Show the "Download text file" button after file conversion
+    document.getElementById('downloadSection').style.display = 'block';
+
+    // Set the link to download the text file
+    let downloadLink = document.getElementById('downloadLink');
+    downloadLink.href = url;
+  })
+  .catch(error => {
+    console.error('There was an error!', error);
+  });
+}
+
     </script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="bootstrap-5.3.1-dist/css/bootstrap.css" />
+    <link href="{{ url_for('serve_static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <title>Login</title>
     <style>
       html,
@@ -35,8 +35,8 @@
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <main class="form-signin w-100 m-auto">
-      <form action="index.html">
-        <img class="mb-4" src="images/logo.png" alt="" width="72" height="57" />
+      <form>
+        <img class="mb-4" src="{{ url_for('serve_images', filename='logo.png') }}" alt="Logo" width="72" height="57" />
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">
@@ -45,7 +45,6 @@
             class="form-control"
             id="floatingInput"
             placeholder="name@example.com"
-            required
           />
           <label for="floatingInput">Email address</label>
         </div>
@@ -55,7 +54,6 @@
             class="form-control"
             id="floatingPassword"
             placeholder="Password"
-            required
           />
           <label for="floatingPassword">Password</label>
         </div>
@@ -77,6 +75,6 @@
         <p class="mt-5 mb-3 text-body-secondary">&copy; 2023</p>
       </form>
     </main>
-    <script src="bootstrap-5.3.1-dist/js/bootstrap.bundle.js"></script>
+    <script src="{{ url_for('serve_static', filename='js/bootstrap.bundle.min.js') }}"></script>
   </body>
 </html>
